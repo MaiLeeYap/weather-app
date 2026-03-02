@@ -15,11 +15,11 @@ interface Props {
 function tempColor(t: number): string {
   if (t <= -15) return "#1e40af"; // blue-800    7.4:1 ✓ WCAG AAA
   if (t <= 0)   return "#1d4ed8"; // blue-700    5.9:1 ✓ WCAG AA
-  if (t <= 8)   return "#065f46"; // emerald-900 10:1  ✓ WCAG AAA
-  if (t <= 15)  return "#166534"; // green-900   9.5:1 ✓ WCAG AAA
+  if (t <= 8)   return "#14A736"; // green
+  if (t <= 15)  return "#14A736"; // green
   if (t <= 20)  return "#854d0e"; // amber-800   7.9:1 ✓ WCAG AAA
   if (t <= 26)  return "#9a3412"; // orange-900  8.2:1 ✓ WCAG AAA
-  return "#991b1b";               // red-800     8.3:1 ✓ WCAG AAA
+  return "#DD0D0D";               // red
 }
 
 function PrecipBar({ mm, max }: { mm: number; max: number }) {
