@@ -7,7 +7,6 @@ import { buildHourlySlots, buildDailySlots } from "@/lib/utils";
 import { storeTodayForecast, getStoredForecast, computeAccuracy } from "@/lib/accuracy";
 import CitySearch from "./CitySearch";
 import CurrentConditions from "./CurrentConditions";
-import WeatherSummary from "./WeatherSummary";
 import ForecastAccuracy from "./ForecastAccuracy";
 import HourlyForecast from "./HourlyForecast";
 import DailyForecast from "./DailyForecast";
@@ -168,11 +167,6 @@ export default function WeatherApp() {
                   <CurrentConditions
                     current={forecast.current}
                     cityName={`${selectedCity.name}${selectedCity.admin1 ? `, ${selectedCity.admin1}` : ""}, ${selectedCity.country}`}
-                    today={dailySlots[0]}
-                  />
-                  <WeatherSummary
-                    current={forecast.current}
-                    slots={hourlySlots}
                     today={dailySlots[0]}
                   />
                   <HourlyForecast slots={hourlySlots} />
