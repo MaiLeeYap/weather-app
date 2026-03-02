@@ -40,7 +40,6 @@ export default function CityWebcam({ lat, lon, cityName }: CityWebcamProps) {
     border: "1px solid var(--card-border)",
     borderRadius: "1rem",
     padding: "1.25rem",
-    backdropFilter: "blur(12px)",
   };
 
   if (loading) {

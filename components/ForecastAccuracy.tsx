@@ -17,10 +17,10 @@ function DiffBadge({ diff }: { diff: number }) {
   const sign = diff > 0 ? "+" : "";
   const color =
     Math.abs(diff) <= 1
-      ? "#22c55e"
+      ? "#16a34a"
       : Math.abs(diff) <= 3
-      ? "#eab308"
-      : "#ef4444";
+      ? "#a16207"
+      : "#dc2626";
   return (
     <span
       className="text-xs font-semibold px-1.5 py-0.5 rounded-md"
@@ -139,8 +139,8 @@ export default function ForecastAccuracy({ result, trackingStarted }: Props) {
           <span
             className="text-xs font-semibold px-1.5 py-0.5 rounded-md flex-shrink-0"
             style={{
-              background: rainMatch ? "#22c55e22" : "#ef444422",
-              color: rainMatch ? "#22c55e" : "#ef4444",
+              background: rainMatch ? "#16a34a22" : "#dc262622",
+              color: rainMatch ? "#16a34a" : "#dc2626",
             }}
           >
             {rainMatch ? "✓" : "✗"}
@@ -157,8 +157,8 @@ export default function ForecastAccuracy({ result, trackingStarted }: Props) {
             className="text-xs font-semibold px-1.5 py-0.5 rounded-md flex-shrink-0"
             style={
               forecastWMO.description === actualWMO.description
-                ? { background: "#22c55e22", color: "#22c55e" }
-                : { background: "rgba(148,163,184,0.1)", color: "#94a3b8" }
+                ? { background: "#16a34a22", color: "#16a34a" }
+                : { background: "rgba(0,0,0,0.06)", color: "#64748b" }
             }
           >
             {forecastWMO.description === actualWMO.description ? "✓" : "~"}

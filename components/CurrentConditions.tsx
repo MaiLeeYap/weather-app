@@ -16,7 +16,6 @@ export default function CurrentConditions({ current, cityName, today }: Props) {
       className="card rounded-2xl p-4 sm:p-6 md:p-8"
       style={{
         background: "var(--card-bg)",
-        backdropFilter: "blur(12px)",
         border: "1px solid var(--card-border)",
       }}
     >

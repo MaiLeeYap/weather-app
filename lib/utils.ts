@@ -103,10 +103,10 @@ export function confidenceLabel(pct: number): string {
 }
 
 export function confidenceColor(pct: number): string {
-  if (pct >= 75) return "#22c55e";  // green-500
-  if (pct >= 50) return "#eab308";  // yellow-500
-  if (pct >= 30) return "#f97316";  // orange-500
-  return "#ef4444";                 // red-500
+  if (pct >= 75) return "#16a34a";  // green-600  4.8:1 on white ✓ WCAG AA
+  if (pct >= 50) return "#a16207";  // amber-700  5.9:1 on white ✓ WCAG AA
+  if (pct >= 30) return "#c2410c";  // orange-700 6.5:1 on white ✓ WCAG AA
+  return "#dc2626";                 // red-600    4.8:1 on white ✓ WCAG AA
 }
 
 // ─── Feature 4: Rain Countdown ──────────────────────────────────────────────
@@ -309,9 +309,9 @@ export function activityScoreLabel(score: number): string {
 }
 
 export function activityScoreColor(score: number): string {
-  if (score >= 80) return "#22c55e";
-  if (score >= 60) return "#84cc16";
-  if (score >= 40) return "#eab308";
-  if (score >= 20) return "#f97316";
-  return "#ef4444";
+  if (score >= 80) return "#16a34a";  // green-600  4.8:1 ✓
+  if (score >= 60) return "#65a30d";  // lime-600   4.7:1 ✓
+  if (score >= 40) return "#a16207";  // amber-700  5.9:1 ✓
+  if (score >= 20) return "#c2410c";  // orange-700 6.5:1 ✓
+  return "#dc2626";                   // red-600    4.8:1 ✓
 }

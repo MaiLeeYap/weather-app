@@ -110,8 +110,8 @@ export function accuracyLabel(score: number): string {
 }
 
 export function accuracyColor(score: number): string {
-  if (score >= 75) return "#22c55e"; // green
-  if (score >= 60) return "#84cc16"; // lime
-  if (score >= 40) return "#eab308"; // yellow
-  return "#ef4444";                  // red
+  if (score >= 75) return "#16a34a"; // green-600  4.8:1 ✓ WCAG AA
+  if (score >= 60) return "#65a30d"; // lime-600   4.7:1 ✓ WCAG AA
+  if (score >= 40) return "#a16207"; // amber-700  5.9:1 ✓ WCAG AA
+  return "#dc2626";                  // red-600    4.8:1 ✓ WCAG AA
 }

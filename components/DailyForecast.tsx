@@ -12,7 +12,6 @@ export default function DailyForecast({ slots }: Props) {
       className="card rounded-2xl p-5 md:p-6"
       style={{
         background: "var(--card-bg)",
-        backdropFilter: "blur(12px)",
         border: "1px solid var(--card-border)",
       }}
     >
