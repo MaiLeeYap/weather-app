@@ -19,16 +19,6 @@ import MonthlyClimate from "./MonthlyClimate";
 
 const GlobeView = dynamic(() => import("./GlobeView"), { ssr: false });
 
-function yesterdayStr(): string {
-  const d = new Date();
-  d.setDate(d.getDate() - 1);
-  return d.toISOString().slice(0, 10);
-}
-
-function todayStr(): string {
-  return new Date().toISOString().slice(0, 10);
-}
-
 function formatToday(): string {
   return new Date().toLocaleDateString("en-GB", {
     weekday: "long",
@@ -80,7 +70,10 @@ export default function WeatherApp() {
       if (accuracyRes.ok) {
         const actualData = await accuracyRes.json();
         const stored = getStoredForecast(city.latitude, city.longitude);
-        if (stored && stored.forDate === yesterdayStr()) {
+        // actualData.date is yesterday in the city's local timezone (from Open-Meteo)
+        // stored.forDate is the date we stored the forecast for (also from Open-Meteo)
+        // Comparing these avoids UTC vs local timezone mismatches
+        if (stored && stored.forDate === actualData.date) {
           setAccuracyResult(
             computeAccuracy(stored, {
               tempMax: actualData.tempMax,
@@ -89,7 +82,7 @@ export default function WeatherApp() {
               weatherCode: actualData.weatherCode,
             })
           );
-        } else if (stored && stored.forDate === todayStr()) {
+        } else if (stored) {
           setTrackingStarted(true);
         }
       }

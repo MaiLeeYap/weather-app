@@ -36,8 +36,8 @@ export default function CityWebcam({ lat, lon, cityName }: CityWebcamProps) {
   }, [lat, lon]);
 
   const cardStyle: React.CSSProperties = {
-    background: "rgba(15, 23, 42, 0.7)",
-    border: "1px solid rgba(255, 255, 255, 0.08)",
+    background: "var(--card-bg)",
+    border: "1px solid var(--card-border)",
     borderRadius: "1rem",
     padding: "1.25rem",
     backdropFilter: "blur(12px)",
@@ -45,7 +45,7 @@ export default function CityWebcam({ lat, lon, cityName }: CityWebcamProps) {
 
   if (loading) {
     return (
-      <div style={cardStyle}>
+      <div className="card" style={cardStyle}>
         <h2 className="text-slate-300 text-sm font-semibold mb-3 flex items-center gap-2">
           📷 Live Webcams
         </h2>
@@ -64,7 +64,7 @@ export default function CityWebcam({ lat, lon, cityName }: CityWebcamProps) {
 
   if (webcams.length === 0) {
     return (
-      <div style={cardStyle}>
+      <div className="card" style={cardStyle}>
         <h2 className="text-slate-300 text-sm font-semibold mb-2 flex items-center gap-2">
           📷 Live Webcams
         </h2>
@@ -76,7 +76,7 @@ export default function CityWebcam({ lat, lon, cityName }: CityWebcamProps) {
   }
 
   return (
-    <div style={cardStyle}>
+    <div className="card" style={cardStyle}>
       <h2 className="text-slate-300 text-sm font-semibold mb-3 flex items-center gap-2">
         📷 Live Webcams
         <span className="text-slate-500 font-normal">near {cityName}</span>

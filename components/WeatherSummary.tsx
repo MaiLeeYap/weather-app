@@ -16,7 +16,7 @@ export default function WeatherSummary({ current, slots, today }: Props) {
 
   return (
     <div
-      className="rounded-2xl p-5 md:p-6"
+      className="card rounded-2xl p-5 md:p-6"
       style={{
         background: "var(--card-bg)",
         backdropFilter: "blur(12px)",

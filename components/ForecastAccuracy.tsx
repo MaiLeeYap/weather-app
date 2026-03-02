@@ -36,10 +36,10 @@ export default function ForecastAccuracy({ result, trackingStarted }: Props) {
   if (!result) {
     return (
       <div
-        className="rounded-2xl p-5"
+        className="card rounded-2xl p-5"
         style={{
-          background: "rgba(148,163,184,0.06)",
-          border: "1px solid rgba(148,163,184,0.12)",
+          background: "var(--card-bg)",
+          border: "1px solid var(--card-border)",
         }}
       >
         <div className="flex items-center gap-3">
@@ -73,10 +73,10 @@ export default function ForecastAccuracy({ result, trackingStarted }: Props) {
 
   return (
     <div
-      className="rounded-2xl p-5 flex flex-col gap-4"
+      className="card rounded-2xl p-5 flex flex-col gap-4"
       style={{
-        background: "rgba(148,163,184,0.06)",
-        border: "1px solid rgba(148,163,184,0.12)",
+        background: "var(--card-bg)",
+        border: "1px solid var(--card-border)",
       }}
     >
       {/* Header */}
