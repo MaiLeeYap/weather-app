@@ -37,13 +37,13 @@ export default function DailyForecast({ slots }: Props) {
             <div
               key={i}
               className="flex-shrink-0 flex flex-col items-center rounded-xl min-w-[76px] sm:min-w-[90px] overflow-hidden"
-              style={{ background: "rgba(255,255,255,0.04)" }}
+              style={{ background: "rgba(0,0,0,0.04)" }}
             >
               {/* Feature 1: Confidence colour bar at top of each card */}
               <div
                 className="w-full h-1"
                 title={`Forecast confidence: ${confidence}% (${confLabel})`}
-                style={{ background: "rgba(255,255,255,0.07)" }}
+                style={{ background: "rgba(0,0,0,0.07)" }}
               >
                 <div
                   className="h-full transition-all"

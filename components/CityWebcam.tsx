@@ -54,7 +54,7 @@ export default function CityWebcam({ lat, lon, cityName }: CityWebcamProps) {
             <div
               key={i}
               className="flex-shrink-0 w-48 h-28 rounded-xl animate-pulse"
-              style={{ background: "rgba(255,255,255,0.06)" }}
+              style={{ background: "rgba(0,0,0,0.06)" }}
             />
           ))}
         </div>

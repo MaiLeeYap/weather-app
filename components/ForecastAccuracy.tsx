@@ -100,7 +100,7 @@ export default function ForecastAccuracy({ result, trackingStarted }: Props) {
       </div>
 
       {/* Score bar */}
-      <div className="w-full h-1.5 rounded-full bg-slate-700">
+      <div className="w-full h-1.5 rounded-full bg-slate-200">
         <div
           className="h-full rounded-full transition-all"
           style={{ width: `${score}%`, background: color }}

@@ -30,7 +30,7 @@ function PrecipBar({ mm, max }: { mm: number; max: number }) {
         className="h-2 rounded-full flex-shrink-0"
         style={{
           width: 72,
-          background: "rgba(255,255,255,0.07)",
+          background: "rgba(0,0,0,0.08)",
           position: "relative",
         }}
       >
@@ -76,13 +76,13 @@ export default function MonthlyClimate({ lat, lon, cityName }: Props) {
       <div style={cardStyle}>
         <div
           className="h-3 w-56 rounded-full animate-pulse mb-5"
-          style={{ background: "rgba(255,255,255,0.08)" }}
+          style={{ background: "rgba(0,0,0,0.07)" }}
         />
         {Array.from({ length: 12 }).map((_, i) => (
           <div
             key={i}
             className="h-6 rounded-lg animate-pulse mb-1.5"
-            style={{ background: "rgba(255,255,255,0.04)" }}
+            style={{ background: "rgba(0,0,0,0.04)" }}
           />
         ))}
       </div>
@@ -130,7 +130,7 @@ export default function MonthlyClimate({ lat, lon, cityName }: Props) {
                 <tr
                   key={m.month}
                   style={{
-                    background: "rgba(255,255,255,0.02)",
+                    background: "rgba(0,0,0,0.03)",
                     borderRadius: "0.5rem",
                   }}
                 >
@@ -169,7 +169,7 @@ export default function MonthlyClimate({ lat, lon, cityName }: Props) {
                   <td className="py-2 pr-4" style={{ minWidth: 120 }}>
                     <div
                       className="relative h-4 rounded"
-                      style={{ background: "rgba(255,255,255,0.05)" }}
+                      style={{ background: "rgba(0,0,0,0.06)" }}
                     >
                       <div
                         className="absolute top-0 h-4 rounded"

@@ -34,11 +34,10 @@ export default function WindyMap({ lat, lon }: WindyMapProps) {
   return (
     <div
       style={{
-        background: "rgba(15, 23, 42, 0.7)",
-        border: "1px solid rgba(255, 255, 255, 0.08)",
+        background: "var(--card-bg)",
+        border: "1px solid var(--card-border)",
         borderRadius: "1rem",
         overflow: "hidden",
-        backdropFilter: "blur(12px)",
       }}
     >
       {/* Header + tabs */}
@@ -55,7 +54,7 @@ export default function WindyMap({ lat, lon }: WindyMapProps) {
                   ? {
                       background: "rgba(96,165,250,0.15)",
                       border: "1px solid rgba(96,165,250,0.35)",
-                      color: "#93c5fd",
+                      color: "#1d4ed8",
                     }
                   : {
                       background: "transparent",

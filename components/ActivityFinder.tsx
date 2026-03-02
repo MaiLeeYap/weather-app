@@ -54,12 +54,12 @@ export default function ActivityFinder({ slots, today }: Props) {
               className="rounded-xl px-4 py-2 text-sm font-medium transition-all cursor-pointer"
               style={{
                 background: active
-                  ? "rgba(96,165,250,0.2)"
-                  : "rgba(255,255,255,0.05)",
+                  ? "rgba(37,99,235,0.1)"
+                  : "rgba(0,0,0,0.05)",
                 border: active
-                  ? "1px solid rgba(96,165,250,0.4)"
-                  : "1px solid rgba(255,255,255,0.06)",
-                color: active ? "#93c5fd" : "#94a3b8",
+                  ? "1px solid rgba(37,99,235,0.3)"
+                  : "1px solid rgba(0,0,0,0.08)",
+                color: active ? "#1d4ed8" : "#64748b",
               }}
             >
               {a.emoji} {a.label}
@@ -74,7 +74,7 @@ export default function ActivityFinder({ slots, today }: Props) {
           {isGolden && noWindows && (
             <div
               className="rounded-xl p-4 text-sm"
-              style={{ background: "rgba(255,255,255,0.04)" }}
+              style={{ background: "rgba(0,0,0,0.04)" }}
             >
               <p className="text-slate-400 mb-2">
                 📸 Golden hour windows are outside the next 24h slots, but today&apos;s moments are:
@@ -143,7 +143,7 @@ export default function ActivityFinder({ slots, today }: Props) {
                       </div>
                       <div
                         className="h-1.5 rounded-full"
-                        style={{ background: "rgba(255,255,255,0.08)" }}
+                        style={{ background: "rgba(0,0,0,0.08)" }}
                       >
                         <div
                           className="h-full rounded-full transition-all"

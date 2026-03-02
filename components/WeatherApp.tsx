@@ -139,7 +139,7 @@ export default function WeatherApp() {
             <div className="flex flex-col gap-5 order-2 lg:order-1">
               {loading && (
                 <div className="flex flex-col items-center gap-4 py-12">
-                  <div className="w-10 h-10 border-4 border-slate-700 border-t-blue-400 rounded-full animate-spin" />
+                  <div className="w-10 h-10 border-4 border-slate-200 border-t-blue-500 rounded-full animate-spin" />
                   <p className="text-slate-400 text-sm">Loading forecast…</p>
                 </div>
               )}
@@ -190,7 +190,7 @@ export default function WeatherApp() {
       </main>
 
       {/* Footer */}
-      <footer className="text-center py-4 px-4 text-slate-600 text-xs border-t border-white/5">
+      <footer className="text-center py-4 px-4 text-slate-600 text-xs border-t border-black/8">
         Powered by Open-Meteo · No API key needed
       </footer>
     </div>

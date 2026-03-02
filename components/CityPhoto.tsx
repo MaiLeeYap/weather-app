@@ -53,7 +53,7 @@ export default function CityPhoto({ cityName, country }: CityPhotoProps) {
     return (
       <div
         className="w-full rounded-2xl animate-pulse"
-        style={{ height: 220, background: "rgba(255,255,255,0.06)" }}
+        style={{ height: 220, background: "rgba(0,0,0,0.06)" }}
       />
     );
   }

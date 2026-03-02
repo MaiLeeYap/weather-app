@@ -101,7 +101,7 @@ function GlobeInner({ city }: GlobeViewProps) {
       style={{
         width: "100%",
         height: 380,
-        background: "#0a0f1a",
+        background: "#dce9f7",
         borderRadius: "1rem",
         overflow: "hidden",
         display: "flex",
@@ -113,7 +113,7 @@ function GlobeInner({ city }: GlobeViewProps) {
         ref={globeRef}
         width={width}
         height={380}
-        backgroundColor="#0a0f1a"
+        backgroundColor="#dce9f7"
         globeImageUrl="https://raw.githubusercontent.com/turban/webgl-earth/master/images/2_no_clouds_4k.jpg"
         bumpImageUrl="https://raw.githubusercontent.com/turban/webgl-earth/master/images/elev_bump_4k.jpg"
         atmosphereColor="#4fc3f7"
