@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function HourlyForecast({ slots }: Props) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   return (
     <div
       className="card rounded-2xl p-5 md:p-6"
@@ -35,7 +35,7 @@ export default function HourlyForecast({ slots }: Props) {
         </div>
 
         {slots.map((slot, i) => {
-          const wmo = getWMO(slot.weatherCode);
+          const wmo = getWMO(slot.weatherCode, lang);
           return (
             <div
               key={i}

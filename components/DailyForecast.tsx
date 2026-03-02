@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function DailyForecast({ slots }: Props) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   return (
     <div
       className="card rounded-2xl p-5 md:p-6"
@@ -28,7 +28,7 @@ export default function DailyForecast({ slots }: Props) {
 
       <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-thin">
         {slots.map((slot, i) => {
-          const wmo = getWMO(slot.weatherCode);
+          const wmo = getWMO(slot.weatherCode, lang);
           const confidence = getDayConfidence(i, slot.precipitationProbability);
           const confColor = confidenceColor(confidence);
           const dayLabel =

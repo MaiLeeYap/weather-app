@@ -26,7 +26,7 @@ interface Props {
 }
 
 export default function ActivityFinder({ slots, today }: Props) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [selected, setSelected] = useState<string | null>(null);
 
   const activityLabels: Record<string, string> = {
@@ -113,7 +113,7 @@ export default function ActivityFinder({ slots, today }: Props) {
           {!noWindows && (
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {windows.map(({ slot, score }, i) => {
-                const wmo = getWMO(slot.weatherCode);
+                const wmo = getWMO(slot.weatherCode, lang);
                 const scoreCol = activityScoreColor(score);
                 const scoreTag = scoreLabel(score, t);
                 return (

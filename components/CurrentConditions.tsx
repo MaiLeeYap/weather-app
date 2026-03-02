@@ -19,8 +19,8 @@ interface Props {
 }
 
 export default function CurrentConditions({ current, cityName, today }: Props) {
-  const { t } = useLanguage();
-  const wmo = getWMO(current.weather_code);
+  const { t, lang } = useLanguage();
+  const wmo = getWMO(current.weather_code, lang);
 
   return (
     <div

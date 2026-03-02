@@ -42,7 +42,7 @@ function DiffBadge({ diff }: { diff: number }) {
 }
 
 export default function ForecastAccuracy({ result, trackingStarted }: Props) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   // ── Teaser state ──────────────────────────────────────────────────────────
   if (!result) {
     return (
@@ -77,8 +77,8 @@ export default function ForecastAccuracy({ result, trackingStarted }: Props) {
   const actualRain = actual.precipProbability >= RAIN_THRESHOLD;
   const rainMatch = forecastRain === actualRain;
 
-  const forecastWMO = getWMO(forecast.weatherCode);
-  const actualWMO = getWMO(actual.weatherCode);
+  const forecastWMO = getWMO(forecast.weatherCode, lang);
+  const actualWMO = getWMO(actual.weatherCode, lang);
 
   return (
     <div

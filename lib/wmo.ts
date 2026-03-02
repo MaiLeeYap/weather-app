@@ -1,39 +1,42 @@
+import type { Language } from "./i18n";
+
 interface WMOEntry {
   description: string;
   emoji: string;
 }
 
-const wmoMap: Record<number, WMOEntry> = {
-  0:  { description: "Clear sky",                emoji: "☀️" },
-  1:  { description: "Mainly clear",             emoji: "🌤️" },
-  2:  { description: "Partly cloudy",            emoji: "⛅" },
-  3:  { description: "Overcast",                 emoji: "☁️" },
-  45: { description: "Fog",                      emoji: "🌫️" },
-  48: { description: "Icy fog",                  emoji: "🌫️" },
-  51: { description: "Light drizzle",            emoji: "🌦️" },
-  53: { description: "Moderate drizzle",         emoji: "🌦️" },
-  55: { description: "Dense drizzle",            emoji: "🌧️" },
-  56: { description: "Light freezing drizzle",   emoji: "🌨️" },
-  57: { description: "Heavy freezing drizzle",   emoji: "🌨️" },
-  61: { description: "Slight rain",              emoji: "🌧️" },
-  63: { description: "Moderate rain",            emoji: "🌧️" },
-  65: { description: "Heavy rain",               emoji: "🌧️" },
-  66: { description: "Light freezing rain",      emoji: "🌨️" },
-  67: { description: "Heavy freezing rain",      emoji: "🌨️" },
-  71: { description: "Slight snowfall",          emoji: "🌨️" },
-  73: { description: "Moderate snowfall",        emoji: "❄️" },
-  75: { description: "Heavy snowfall",           emoji: "❄️" },
-  77: { description: "Snow grains",              emoji: "🌨️" },
-  80: { description: "Slight rain showers",      emoji: "🌦️" },
-  81: { description: "Moderate rain showers",    emoji: "🌧️" },
-  82: { description: "Violent rain showers",     emoji: "⛈️" },
-  85: { description: "Slight snow showers",      emoji: "🌨️" },
-  86: { description: "Heavy snow showers",       emoji: "❄️" },
-  95: { description: "Thunderstorm",             emoji: "⛈️" },
-  96: { description: "Thunderstorm w/ hail",     emoji: "⛈️" },
-  99: { description: "Thunderstorm w/ heavy hail", emoji: "⛈️" },
+const wmoData: Record<number, { en: string; sv: string; emoji: string }> = {
+  0:  { en: "Clear sky",                      sv: "Klar himmel",                       emoji: "☀️"  },
+  1:  { en: "Mainly clear",                   sv: "Mestadels klart",                   emoji: "🌤️" },
+  2:  { en: "Partly cloudy",                  sv: "Delvis molnigt",                    emoji: "⛅"  },
+  3:  { en: "Overcast",                       sv: "Mulet",                             emoji: "☁️"  },
+  45: { en: "Fog",                            sv: "Dimma",                             emoji: "🌫️" },
+  48: { en: "Icy fog",                        sv: "Isig dimma",                        emoji: "🌫️" },
+  51: { en: "Light drizzle",                  sv: "Lätt duggregn",                     emoji: "🌦️" },
+  53: { en: "Moderate drizzle",               sv: "Måttligt duggregn",                 emoji: "🌦️" },
+  55: { en: "Dense drizzle",                  sv: "Tätt duggregn",                     emoji: "🌧️" },
+  56: { en: "Light freezing drizzle",         sv: "Lätt underkylt duggregn",           emoji: "🌨️" },
+  57: { en: "Heavy freezing drizzle",         sv: "Kraftigt underkylt duggregn",       emoji: "🌨️" },
+  61: { en: "Slight rain",                    sv: "Lätt regn",                         emoji: "🌧️" },
+  63: { en: "Moderate rain",                  sv: "Måttligt regn",                     emoji: "🌧️" },
+  65: { en: "Heavy rain",                     sv: "Kraftigt regn",                     emoji: "🌧️" },
+  66: { en: "Light freezing rain",            sv: "Lätt isregn",                       emoji: "🌨️" },
+  67: { en: "Heavy freezing rain",            sv: "Kraftigt isregn",                   emoji: "🌨️" },
+  71: { en: "Slight snowfall",               sv: "Lätt snöfall",                      emoji: "🌨️" },
+  73: { en: "Moderate snowfall",             sv: "Måttligt snöfall",                  emoji: "❄️"  },
+  75: { en: "Heavy snowfall",                sv: "Kraftigt snöfall",                  emoji: "❄️"  },
+  77: { en: "Snow grains",                   sv: "Snökorn",                           emoji: "🌨️" },
+  80: { en: "Slight rain showers",           sv: "Lätta regnskurar",                  emoji: "🌦️" },
+  81: { en: "Moderate rain showers",         sv: "Måttliga regnskurar",               emoji: "🌧️" },
+  82: { en: "Violent rain showers",          sv: "Kraftiga regnskurar",               emoji: "⛈️"  },
+  85: { en: "Slight snow showers",           sv: "Lätta snöbyar",                     emoji: "🌨️" },
+  86: { en: "Heavy snow showers",            sv: "Kraftiga snöbyar",                  emoji: "❄️"  },
+  95: { en: "Thunderstorm",                  sv: "Åskväder",                          emoji: "⛈️"  },
+  96: { en: "Thunderstorm w/ hail",          sv: "Åskväder med hagel",                emoji: "⛈️"  },
+  99: { en: "Thunderstorm w/ heavy hail",    sv: "Åskväder med kraftigt hagel",       emoji: "⛈️"  },
 };
 
-export function getWMO(code: number): WMOEntry {
-  return wmoMap[code] ?? { description: "Unknown", emoji: "🌡️" };
+export function getWMO(code: number, lang: Language = "en"): WMOEntry {
+  const entry = wmoData[code] ?? { en: "Unknown", sv: "Okänd", emoji: "🌡️" };
+  return { description: entry[lang], emoji: entry.emoji };
 }
