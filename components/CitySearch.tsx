@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Search, X, Clock } from "lucide-react";
 import type { City } from "@/lib/types";
 import { searchCities } from "@/lib/openmeteo";
+import { useLanguage } from "@/lib/LanguageContext";
 
 const STORAGE_KEY = "wx_recent_searches";
 const MAX_RECENT = 10;
@@ -29,6 +30,7 @@ interface Props {
 }
 
 export default function CitySearch({ onSelect }: Props) {
+  const { t } = useLanguage();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<City[]>([]);
   const [open, setOpen] = useState(false);
@@ -141,7 +143,7 @@ export default function CitySearch({ onSelect }: Props) {
         <input
           ref={inputRef}
           type="text"
-          placeholder="Search city…"
+          placeholder={t.searchPlaceholder}
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
@@ -191,7 +193,7 @@ export default function CitySearch({ onSelect }: Props) {
               style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}
             >
               <span className="text-slate-500 text-xs font-medium uppercase tracking-wide flex items-center gap-1.5">
-                <Clock className="w-3 h-3" /> Recent searches
+                <Clock className="w-3 h-3" /> {t.recentSearches}
               </span>
               <button
                 onMouseDown={(e) => {
@@ -202,7 +204,7 @@ export default function CitySearch({ onSelect }: Props) {
                 }}
                 className="text-slate-600 hover:text-slate-400 text-xs transition-colors"
               >
-                Clear all
+                {t.clearAll}
               </button>
             </li>
           )}
@@ -256,7 +258,7 @@ export default function CitySearch({ onSelect }: Props) {
             border: "1px solid var(--card-border)",
           }}
         >
-          <li className="px-4 py-3 text-slate-400 text-sm">No results found</li>
+          <li className="px-4 py-3 text-slate-400 text-sm">{t.noResults}</li>
         </ul>
       )}
     </div>

@@ -3,12 +3,14 @@
 import type { HourlySlot } from "@/lib/types";
 import { getWMO } from "@/lib/wmo";
 import { formatTime } from "@/lib/utils";
+import { useLanguage } from "@/lib/LanguageContext";
 
 interface Props {
   slots: HourlySlot[];
 }
 
 export default function HourlyForecast({ slots }: Props) {
+  const { t } = useLanguage();
   return (
     <div
       className="card rounded-2xl p-5 md:p-6"
@@ -18,18 +20,18 @@ export default function HourlyForecast({ slots }: Props) {
       }}
     >
       <h2 className="text-slate-300 font-semibold mb-3 text-sm uppercase tracking-wider">
-        24-Hour Forecast
+        {t.hourlyTitle}
       </h2>
 
       <div className="flex flex-col">
         {/* Column headers */}
         <div className="flex items-center gap-3 pb-2 border-b border-slate-100 text-[11px] text-slate-500 font-medium">
-          <span className="w-12 flex-shrink-0">Time</span>
+          <span className="w-12 flex-shrink-0">{t.time}</span>
           <span className="w-8 flex-shrink-0" />
-          <span className="w-12 flex-shrink-0">Temp</span>
-          <span className="flex-1 hidden sm:block">Conditions</span>
-          <span className="w-14 text-right flex-shrink-0">Rain</span>
-          <span className="w-20 text-right flex-shrink-0 hidden sm:block">Wind</span>
+          <span className="w-12 flex-shrink-0">{t.temp}</span>
+          <span className="flex-1 hidden sm:block">{t.conditions}</span>
+          <span className="w-14 text-right flex-shrink-0">{t.rain}</span>
+          <span className="w-20 text-right flex-shrink-0 hidden sm:block">{t.wind}</span>
         </div>
 
         {slots.map((slot, i) => {

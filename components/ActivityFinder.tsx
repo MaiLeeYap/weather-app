@@ -6,10 +6,19 @@ import {
   ACTIVITIES,
   findActivityWindows,
   formatTime,
-  activityScoreLabel,
   activityScoreColor,
 } from "@/lib/utils";
 import { getWMO } from "@/lib/wmo";
+import { useLanguage } from "@/lib/LanguageContext";
+import type { Translations } from "@/lib/i18n";
+
+function scoreLabel(score: number, t: Translations): string {
+  if (score >= 80) return t.scoreExcellent;
+  if (score >= 60) return t.scoreGood;
+  if (score >= 40) return t.scoreFair;
+  if (score >= 20) return t.scorePoor;
+  return t.scoreAvoid;
+}
 
 interface Props {
   slots: HourlySlot[];
@@ -17,7 +26,17 @@ interface Props {
 }
 
 export default function ActivityFinder({ slots, today }: Props) {
+  const { t } = useLanguage();
   const [selected, setSelected] = useState<string | null>(null);
+
+  const activityLabels: Record<string, string> = {
+    run: t.activityRun,
+    cycle: t.activityCycle,
+    garden: t.activityGarden,
+    bbq: t.activityBBQ,
+    sunbathe: t.activitySunbathe,
+    golden: t.activityGolden,
+  };
 
   const opts = { sunrise: today.sunrise, sunset: today.sunset };
   const windows = selected ? findActivityWindows(selected, slots, opts) : [];
@@ -36,10 +55,10 @@ export default function ActivityFinder({ slots, today }: Props) {
       }}
     >
       <h2 className="text-slate-300 font-semibold mb-1 text-sm uppercase tracking-wider">
-        Best Time For…
+        {t.activityTitle}
       </h2>
       <p className="text-slate-600 text-xs mb-4">
-        Pick an activity to see your best 3-hour windows today
+        {t.activitySubtitle}
       </p>
 
       {/* Activity buttons */}
@@ -61,7 +80,7 @@ export default function ActivityFinder({ slots, today }: Props) {
                 color: active ? "#1d4ed8" : "#64748b",
               }}
             >
-              {a.emoji} {a.label}
+              {a.emoji} {activityLabels[a.id] ?? a.label}
             </button>
           );
         })}
@@ -76,15 +95,15 @@ export default function ActivityFinder({ slots, today }: Props) {
               style={{ background: "rgba(0,0,0,0.04)" }}
             >
               <p className="text-slate-400 mb-2">
-                📸 Golden hour windows are outside the next 24h slots, but today&apos;s moments are:
+                📸 {t.goldenHourNote}
               </p>
               <div className="flex gap-4">
                 <div>
-                  <span className="text-slate-500 text-xs">Sunrise</span>
+                  <span className="text-slate-500 text-xs">{t.sunrise}</span>
                   <p className="text-amber-400 font-semibold">{formatTime(today.sunrise)}</p>
                 </div>
                 <div>
-                  <span className="text-slate-500 text-xs">Sunset</span>
+                  <span className="text-slate-500 text-xs">{t.sunset}</span>
                   <p className="text-orange-400 font-semibold">{formatTime(today.sunset)}</p>
                 </div>
               </div>
@@ -96,7 +115,7 @@ export default function ActivityFinder({ slots, today }: Props) {
               {windows.map(({ slot, score }, i) => {
                 const wmo = getWMO(slot.weatherCode);
                 const scoreCol = activityScoreColor(score);
-                const scoreTag = activityScoreLabel(score);
+                const scoreTag = scoreLabel(score, t);
                 return (
                   <div
                     key={i}
@@ -108,7 +127,7 @@ export default function ActivityFinder({ slots, today }: Props) {
                   >
                     {/* Rank + time */}
                     <div className="flex items-center justify-between">
-                      <span className="text-slate-500 text-xs">#{i + 1} pick</span>
+                      <span className="text-slate-500 text-xs">#{i + 1} {t.pick}</span>
                       <span
                         className="text-xs font-semibold px-2 py-0.5 rounded-full"
                         style={{
@@ -137,7 +156,7 @@ export default function ActivityFinder({ slots, today }: Props) {
                     {/* Score bar */}
                     <div>
                       <div className="flex justify-between text-xs text-slate-500 mb-1">
-                        <span>Conditions score</span>
+                        <span>{t.conditionsScore}</span>
                         <span style={{ color: scoreCol }}>{score}/100</span>
                       </div>
                       <div
@@ -166,7 +185,7 @@ export default function ActivityFinder({ slots, today }: Props) {
 
           {!isGolden && noWindows && (
             <p className="text-slate-500 text-sm text-center py-4">
-              No suitable window found for {selectedDef?.emoji} {selectedDef?.label} in the next 24h.
+              {t.noWindow} {selectedDef?.emoji} {activityLabels[selectedDef?.id ?? ""] ?? selectedDef?.label} {t.noWindowSuffix}
             </p>
           )}
         </>

@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import type { City, ForecastData, AccuracyResult } from "@/lib/types";
 import { buildHourlySlots, buildDailySlots } from "@/lib/utils";
 import { storeTodayForecast, getStoredForecast, computeAccuracy } from "@/lib/accuracy";
+import { LanguageProvider, useLanguage } from "@/lib/LanguageContext";
 import CitySearch from "./CitySearch";
 import CurrentConditions from "./CurrentConditions";
 import ForecastAccuracy from "./ForecastAccuracy";
@@ -28,6 +29,15 @@ function formatToday(): string {
 }
 
 export default function WeatherApp() {
+  return (
+    <LanguageProvider>
+      <WeatherAppInner />
+    </LanguageProvider>
+  );
+}
+
+function WeatherAppInner() {
+  const { lang, setLang, t } = useLanguage();
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const [forecast, setForecast] = useState<ForecastData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -101,11 +111,29 @@ export default function WeatherApp() {
         <div className="max-w-7xl mx-auto flex flex-col gap-5">
 
           {/* Header */}
-          <div className="text-center">
+          <div className="text-center relative">
             <h1 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-1">
-              Yappan&apos;s Weather Forecast
+              {t.appTitle}
             </h1>
             <p className="text-slate-500 text-xs sm:text-sm">{formatToday()}</p>
+            {/* Language toggle */}
+            <div className="absolute right-0 top-0 flex items-center gap-1 rounded-xl overflow-hidden border border-slate-200"
+              style={{ borderColor: "var(--card-border)" }}
+            >
+              {(["en", "sv"] as const).map((l) => (
+                <button
+                  key={l}
+                  onClick={() => setLang(l)}
+                  className="px-3 py-1.5 text-xs font-semibold transition-colors"
+                  style={{
+                    background: lang === l ? "var(--accent-blue)" : "transparent",
+                    color: lang === l ? "#ffffff" : "#64748b",
+                  }}
+                >
+                  {l === "en" ? "🇬🇧 EN" : "🇸🇪 SV"}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Search — full width */}
@@ -140,7 +168,7 @@ export default function WeatherApp() {
               {loading && (
                 <div className="flex flex-col items-center gap-4 py-12">
                   <div className="w-10 h-10 border-4 border-slate-200 border-t-blue-500 rounded-full animate-spin" />
-                  <p className="text-slate-400 text-sm">Loading forecast…</p>
+                  <p className="text-slate-400 text-sm">{t.loadingForecast}</p>
                 </div>
               )}
 
@@ -158,7 +186,7 @@ export default function WeatherApp() {
 
               {!loading && !error && !forecast && (
                 <div className="text-center py-12 text-slate-600">
-                  <p className="text-base sm:text-lg">Search for a city to see the forecast</p>
+                  <p className="text-base sm:text-lg">{t.searchPrompt}</p>
                 </div>
               )}
 
@@ -191,7 +219,7 @@ export default function WeatherApp() {
 
       {/* Footer */}
       <footer className="text-center py-4 px-4 text-slate-600 text-xs border-t border-black/8">
-        Powered by Open-Meteo · No API key needed
+        {t.poweredBy}
       </footer>
     </div>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLanguage } from "@/lib/LanguageContext";
 
 interface Webcam {
   id: string;
@@ -17,6 +18,7 @@ interface CityWebcamProps {
 }
 
 export default function CityWebcam({ lat, lon, cityName }: CityWebcamProps) {
+  const { t } = useLanguage();
   const [webcams, setWebcams] = useState<Webcam[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -46,7 +48,7 @@ export default function CityWebcam({ lat, lon, cityName }: CityWebcamProps) {
     return (
       <div className="card" style={cardStyle}>
         <h2 className="text-slate-300 text-sm font-semibold mb-3 flex items-center gap-2">
-          📷 Live Webcams
+          📷 {t.webcamsTitle}
         </h2>
         <div className="flex gap-3 overflow-x-auto pb-1">
           {[0, 1, 2].map((i) => (
@@ -65,10 +67,10 @@ export default function CityWebcam({ lat, lon, cityName }: CityWebcamProps) {
     return (
       <div className="card" style={cardStyle}>
         <h2 className="text-slate-300 text-sm font-semibold mb-2 flex items-center gap-2">
-          📷 Live Webcams
+          📷 {t.webcamsTitle}
         </h2>
         <p className="text-slate-500 text-sm">
-          No live webcams found near {cityName}.
+          {t.noWebcams} {cityName}.
         </p>
       </div>
     );
@@ -78,7 +80,7 @@ export default function CityWebcam({ lat, lon, cityName }: CityWebcamProps) {
     <div className="card" style={cardStyle}>
       <h2 className="text-slate-300 text-sm font-semibold mb-3 flex items-center gap-2">
         📷 Live Webcams
-        <span className="text-slate-500 font-normal">near {cityName}</span>
+        <span className="text-slate-500 font-normal">{t.webcamsNear} {cityName}</span>
       </h2>
 
       <div className="flex gap-3 overflow-x-auto pb-1">

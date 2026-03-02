@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { MonthSummary } from "@/app/api/climate/route";
-
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+import { useLanguage } from "@/lib/LanguageContext";
 
 interface Props {
   lat: number;
@@ -48,6 +46,7 @@ function PrecipBar({ mm, max }: { mm: number; max: number }) {
 }
 
 export default function MonthlyClimate({ lat, lon, cityName }: Props) {
+  const { t } = useLanguage();
   const [data, setData] = useState<MonthSummary[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -98,9 +97,9 @@ export default function MonthlyClimate({ lat, lon, cityName }: Props) {
   return (
     <div className="card" style={cardStyle}>
       <h2 className="text-slate-300 text-sm font-semibold mb-4">
-        🌡️ Monthly Climate Overview
+        🌡️ {t.climateTitle}
         <span className="text-slate-500 font-normal ml-2">
-          {cityName} · 5-year average
+          {cityName} · {t.fiveYearAvg}
         </span>
       </h2>
 
@@ -111,12 +110,12 @@ export default function MonthlyClimate({ lat, lon, cityName }: Props) {
         >
           <thead>
             <tr className="text-slate-500 text-left">
-              <th className="pb-3 pr-3 font-medium w-10">Month</th>
-              <th className="pb-3 pr-3 font-medium text-right">High</th>
-              <th className="pb-3 pr-3 font-medium text-right">Low</th>
-              <th className="pb-3 pr-4 font-medium text-right hidden sm:table-cell">Mean</th>
-              <th className="pb-3 pr-4 font-medium">Temp range</th>
-              <th className="pb-3 font-medium">Precipitation</th>
+              <th className="pb-3 pr-3 font-medium w-10">{t.monthCol}</th>
+              <th className="pb-3 pr-3 font-medium text-right">{t.climateHigh}</th>
+              <th className="pb-3 pr-3 font-medium text-right">{t.climateLow}</th>
+              <th className="pb-3 pr-4 font-medium text-right hidden sm:table-cell">{t.climateMean}</th>
+              <th className="pb-3 pr-4 font-medium">{t.tempRange}</th>
+              <th className="pb-3 font-medium">{t.precipitation}</th>
             </tr>
           </thead>
           <tbody>
@@ -138,7 +137,7 @@ export default function MonthlyClimate({ lat, lon, cityName }: Props) {
                     className="py-2 pr-3 font-semibold text-slate-400 rounded-l-lg"
                     style={{ paddingLeft: 8 }}
                   >
-                    {MONTHS[m.month]}
+                    {t.months[m.month]}
                   </td>
 
                   {/* High */}
@@ -194,7 +193,7 @@ export default function MonthlyClimate({ lat, lon, cityName }: Props) {
       </div>
 
       <p className="text-slate-600 text-xs mt-4">
-        Based on daily archive data {new Date().getFullYear() - 5}–{new Date().getFullYear() - 1} · Open-Meteo
+        {t.climateFooter(new Date().getFullYear() - 5, new Date().getFullYear() - 1)}
       </p>
     </div>
   );

@@ -1,9 +1,19 @@
 "use client";
 
 import type { AccuracyResult } from "@/lib/types";
-import { accuracyLabel, accuracyColor } from "@/lib/accuracy";
+import { accuracyColor } from "@/lib/accuracy";
 import { getWMO } from "@/lib/wmo";
 import { formatDate } from "@/lib/utils";
+import { useLanguage } from "@/lib/LanguageContext";
+import type { Translations } from "@/lib/i18n";
+
+function accuracyLabelT(score: number, t: Translations): string {
+  if (score >= 90) return t.accuracySpotOn;
+  if (score >= 75) return t.accuracyGood;
+  if (score >= 60) return t.accuracyDecent;
+  if (score >= 40) return t.accuracySoso;
+  return t.accuracyMissed;
+}
 
 interface Props {
   result: AccuracyResult | null;
@@ -32,6 +42,7 @@ function DiffBadge({ diff }: { diff: number }) {
 }
 
 export default function ForecastAccuracy({ result, trackingStarted }: Props) {
+  const { t } = useLanguage();
   // ── Teaser state ──────────────────────────────────────────────────────────
   if (!result) {
     return (
@@ -46,12 +57,10 @@ export default function ForecastAccuracy({ result, trackingStarted }: Props) {
           <span className="text-2xl">🕐</span>
           <div>
             <p className="text-slate-300 font-semibold text-sm">
-              Yesterday&apos;s Forecast Accuracy
+              {t.accuracyTitle}
             </p>
             <p className="text-slate-500 text-xs mt-0.5">
-              {trackingStarted
-                ? "Tracking started — check back tomorrow to see how accurate today's forecast was."
-                : "Search a city to start tracking forecast accuracy."}
+              {trackingStarted ? t.trackingStartedMsg : t.searchToTrack}
             </p>
           </div>
         </div>
@@ -61,7 +70,7 @@ export default function ForecastAccuracy({ result, trackingStarted }: Props) {
 
   // ── Comparison card ───────────────────────────────────────────────────────
   const { score, forecast, actual, tempMaxDiff, tempMinDiff, forDate } = result;
-  const label = accuracyLabel(score);
+  const label = accuracyLabelT(score, t);
   const color = accuracyColor(score);
 
   const forecastRain = forecast.precipProbability >= RAIN_THRESHOLD;
@@ -83,7 +92,7 @@ export default function ForecastAccuracy({ result, trackingStarted }: Props) {
       <div className="flex items-center justify-between">
         <div>
           <p className="text-slate-300 font-semibold text-sm">
-            Yesterday&apos;s Forecast Accuracy
+            {t.accuracyTitle}
           </p>
           <p className="text-slate-500 text-xs mt-0.5">
             {formatDate(forDate)}
@@ -112,13 +121,13 @@ export default function ForecastAccuracy({ result, trackingStarted }: Props) {
         {[
           {
             icon: "🌡",
-            label: "High",
+            label: t.high,
             value: `${Math.round(forecast.tempMax)}° → ${Math.round(actual.tempMax)}°`,
             badge: <DiffBadge diff={tempMaxDiff} />,
           },
           {
             icon: "🌡",
-            label: "Low",
+            label: t.low,
             value: `${Math.round(forecast.tempMin)}° → ${Math.round(actual.tempMin)}°`,
             badge: <DiffBadge diff={tempMinDiff} />,
           },
@@ -132,9 +141,9 @@ export default function ForecastAccuracy({ result, trackingStarted }: Props) {
 
         {/* Rain */}
         <div className="flex items-start justify-between gap-2 text-sm flex-wrap">
-          <span className="text-slate-400 text-xs w-16 flex-shrink-0">🌧 Rain</span>
+          <span className="text-slate-400 text-xs w-16 flex-shrink-0">🌧 {t.rain}</span>
           <span className="text-slate-300 flex-1 min-w-0 text-right sm:text-left text-xs sm:text-sm">
-            {forecast.precipProbability}% ({forecastRain ? "rain" : "dry"}) → {actualRain ? "🌧 rained" : "✓ dry"}
+            {forecast.precipProbability}% ({forecastRain ? t.rainLabel : t.dry}) → {actualRain ? `🌧 ${t.rained}` : `✓ ${t.dry}`}
           </span>
           <span
             className="text-xs font-semibold px-1.5 py-0.5 rounded-md flex-shrink-0"
@@ -149,7 +158,7 @@ export default function ForecastAccuracy({ result, trackingStarted }: Props) {
 
         {/* Conditions */}
         <div className="flex items-start justify-between gap-2 text-sm flex-wrap">
-          <span className="text-slate-400 text-xs w-16 flex-shrink-0">☁️ Sky</span>
+          <span className="text-slate-400 text-xs w-16 flex-shrink-0">☁️ {t.sky}</span>
           <span className="text-slate-300 flex-1 min-w-0 text-right sm:text-left text-xs sm:text-sm">
             {forecastWMO.emoji} {forecastWMO.description} → {actualWMO.emoji} {actualWMO.description}
           </span>

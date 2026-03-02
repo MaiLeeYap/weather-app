@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLanguage } from "@/lib/LanguageContext";
 
 interface WindyMapProps {
   lat: number;
@@ -17,7 +18,17 @@ const OVERLAYS = [
 ] as const;
 
 export default function WindyMap({ lat, lon }: WindyMapProps) {
+  const { t } = useLanguage();
   const [overlay, setOverlay] = useState<string>("wind");
+
+  const overlayLabels: Record<string, string> = {
+    wind: t.overlayWind,
+    rain: t.overlayRain,
+    snowAccu: t.overlaySnow,
+    clouds: t.overlayClouds,
+    temp: t.overlayTemp,
+    cape: t.overlayStorm,
+  };
 
   const src =
     `https://embed.windy.com/embed2.html` +
@@ -42,7 +53,7 @@ export default function WindyMap({ lat, lon }: WindyMapProps) {
     >
       {/* Header + tabs */}
       <div className="flex flex-wrap items-center gap-2 px-4 pt-4 pb-3">
-        <span className="text-slate-300 text-sm font-semibold mr-1">🗺️ Live Weather Map</span>
+        <span className="text-slate-300 text-sm font-semibold mr-1">🗺️ {t.liveMap}</span>
         <div className="flex flex-wrap gap-1 ml-auto">
           {OVERLAYS.map((o) => (
             <button
@@ -64,7 +75,7 @@ export default function WindyMap({ lat, lon }: WindyMapProps) {
               }
             >
               <span>{o.emoji}</span>
-              <span>{o.label}</span>
+              <span>{overlayLabels[o.id] ?? o.label}</span>
             </button>
           ))}
         </div>

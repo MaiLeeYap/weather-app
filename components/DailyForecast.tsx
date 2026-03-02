@@ -1,12 +1,14 @@
 import type { DailySlot } from "@/lib/types";
 import { getWMO } from "@/lib/wmo";
-import { getDayConfidence, confidenceColor, confidenceLabel } from "@/lib/utils";
+import { getDayConfidence, confidenceColor } from "@/lib/utils";
+import { useLanguage } from "@/lib/LanguageContext";
 
 interface Props {
   slots: DailySlot[];
 }
 
 export default function DailyForecast({ slots }: Props) {
+  const { t } = useLanguage();
   return (
     <div
       className="card rounded-2xl p-5 md:p-6"
@@ -17,11 +19,10 @@ export default function DailyForecast({ slots }: Props) {
     >
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-slate-300 font-semibold text-sm uppercase tracking-wider">
-          10-Day Forecast
+          {t.dailyTitle}
         </h2>
-        {/* Feature 1: Confidence legend */}
         <span className="text-slate-600 text-xs">
-          Bar = forecast confidence
+          {t.barConfidence}
         </span>
       </div>
 
@@ -30,7 +31,10 @@ export default function DailyForecast({ slots }: Props) {
           const wmo = getWMO(slot.weatherCode);
           const confidence = getDayConfidence(i, slot.precipitationProbability);
           const confColor = confidenceColor(confidence);
-          const confLabel = confidenceLabel(confidence);
+          const dayLabel =
+            slot.label === "Today" ? t.today
+            : slot.label === "Tomorrow" ? t.tomorrow
+            : slot.label;
 
           return (
             <div
@@ -41,7 +45,7 @@ export default function DailyForecast({ slots }: Props) {
               {/* Feature 1: Confidence colour bar at top of each card */}
               <div
                 className="w-full h-1"
-                title={`Forecast confidence: ${confidence}% (${confLabel})`}
+                title={`${confidence}%`}
                 style={{ background: "rgba(0,0,0,0.07)" }}
               >
                 <div
@@ -51,7 +55,7 @@ export default function DailyForecast({ slots }: Props) {
               </div>
 
               <div className="flex flex-col items-center gap-1.5 px-2 sm:px-4 py-3 text-center w-full">
-                <span className="text-slate-400 text-xs font-medium">{slot.label}</span>
+                <span className="text-slate-400 text-xs font-medium">{dayLabel}</span>
                 <span className="text-3xl my-1">{wmo.emoji}</span>
                 <div className="flex gap-1 text-sm font-semibold">
                   <span style={{ color: "var(--accent-blue)" }}>
@@ -71,9 +75,8 @@ export default function DailyForecast({ slots }: Props) {
                 <span
                   className="text-[10px] font-semibold mt-0.5"
                   style={{ color: confColor }}
-                  title={confLabel}
                 >
-                  {confidence}% conf.
+                  {confidence}% {t.conf}
                 </span>
               </div>
             </div>
@@ -84,10 +87,10 @@ export default function DailyForecast({ slots }: Props) {
       {/* Feature 1: Confidence key */}
       <div className="flex gap-4 mt-4 justify-center flex-wrap">
         {[
-          { label: "High (>75%)", color: "#22c55e" },
-          { label: "Moderate (50-75%)", color: "#eab308" },
-          { label: "Low (30-50%)", color: "#f97316" },
-          { label: "Uncertain (<30%)", color: "#ef4444" },
+          { label: t.confidenceHigh, color: "#16a34a" },
+          { label: t.confidenceModerate, color: "#a16207" },
+          { label: t.confidenceLow, color: "#c2410c" },
+          { label: t.confidenceUncertain, color: "#dc2626" },
         ].map(({ label, color }) => (
           <div key={label} className="flex items-center gap-1.5">
             <div className="w-3 h-1.5 rounded-full" style={{ background: color }} />
