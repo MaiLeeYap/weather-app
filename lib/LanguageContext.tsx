@@ -11,13 +11,13 @@ interface LanguageContextType {
 }
 
 const LanguageContext = createContext<LanguageContextType>({
-  lang: "en",
+  lang: "sv",
   setLang: () => {},
-  t: translations.en,
+  t: translations.sv,
 });
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<Language>("en");
+  const [lang, setLangState] = useState<Language>("sv");
 
   useEffect(() => {
     const stored = localStorage.getItem("wx_lang") as Language | null;
