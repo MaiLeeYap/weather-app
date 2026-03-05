@@ -21,22 +21,28 @@ function GlobeInner({ city }: GlobeViewProps) {
   const globeRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(600);
+  const [globeHeight, setGlobeHeight] = useState(380);
 
   // Keep a ref that is always current so onGlobeReady can read it
   // even if it fires after the city has already been selected.
   const cityRef = useRef<CityCoords | null>(city);
   cityRef.current = city;
 
-  // Measure container width
+  // Measure container width and set responsive height
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     const obs = new ResizeObserver((entries) => {
       const w = entries[0]?.contentRect.width;
-      if (w && w > 0) setWidth(Math.round(w));
+      if (w && w > 0) {
+        setWidth(Math.round(w));
+        setGlobeHeight(w < 480 ? 260 : 380);
+      }
     });
     obs.observe(el);
-    setWidth(Math.round(el.getBoundingClientRect().width) || 600);
+    const initialW = Math.round(el.getBoundingClientRect().width) || 600;
+    setWidth(initialW);
+    setGlobeHeight(initialW < 480 ? 260 : 380);
     return () => obs.disconnect();
   }, []);
 
@@ -100,7 +106,7 @@ function GlobeInner({ city }: GlobeViewProps) {
       ref={containerRef}
       style={{
         width: "100%",
-        height: 380,
+        height: globeHeight,
         background: "#dce9f7",
         borderRadius: "1rem",
         overflow: "hidden",
@@ -112,7 +118,7 @@ function GlobeInner({ city }: GlobeViewProps) {
       <Globe
         ref={globeRef}
         width={width}
-        height={380}
+        height={globeHeight}
         backgroundColor="#dce9f7"
         globeImageUrl="https://raw.githubusercontent.com/turban/webgl-earth/master/images/2_no_clouds_4k.jpg"
         bumpImageUrl="https://raw.githubusercontent.com/turban/webgl-earth/master/images/elev_bump_4k.jpg"

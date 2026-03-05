@@ -111,20 +111,25 @@ function WeatherAppInner() {
         <div className="max-w-7xl mx-auto flex flex-col gap-5">
 
           {/* Header */}
-          <div className="text-center relative">
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-1">
-              {t.appTitle}
-            </h1>
-            <p className="text-slate-500 text-xs sm:text-sm">{formatToday()}</p>
+          <div className="flex items-start justify-between gap-3">
+            {/* Spacer to balance the toggle on the right */}
+            <div className="w-[88px] flex-shrink-0" />
+            <div className="text-center flex-1 min-w-0">
+              <h1 className="text-xl sm:text-3xl font-bold text-slate-100 mb-1 leading-tight">
+                {t.appTitle}
+              </h1>
+              <p className="text-slate-500 text-xs sm:text-sm">{formatToday()}</p>
+            </div>
             {/* Language toggle */}
-            <div className="absolute right-0 top-0 flex items-center gap-1 rounded-xl overflow-hidden border border-slate-200"
+            <div
+              className="flex items-center rounded-xl overflow-hidden border flex-shrink-0"
               style={{ borderColor: "var(--card-border)" }}
             >
               {(["en", "sv"] as const).map((l) => (
                 <button
                   key={l}
                   onClick={() => setLang(l)}
-                  className="px-3 py-1.5 text-xs font-semibold transition-colors"
+                  className="px-2.5 sm:px-3 py-1.5 text-xs font-semibold transition-colors"
                   style={{
                     background: lang === l ? "var(--accent-blue)" : "transparent",
                     color: lang === l ? "#ffffff" : "#64748b",
@@ -140,12 +145,12 @@ function WeatherAppInner() {
           <CitySearch onSelect={handleCitySelect} />
 
           {/* Two-column layout.
-              On mobile: right column (visuals) comes first via order classes
-              so the globe is visible before the data. */}
+              On mobile: single column, LEFT (data) first.
+              On desktop (lg): side-by-side, LEFT on left, RIGHT on right. */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
 
-            {/* ── RIGHT: visuals — rendered first in DOM → top on mobile ── */}
-            <div className="flex flex-col gap-5 order-1 lg:order-2">
+            {/* ── RIGHT: visuals ── */}
+            <div className="flex flex-col gap-5 order-2">
               <GlobeView city={selectedCity} />
 
               {forecast && selectedCity && (
@@ -163,8 +168,8 @@ function WeatherAppInner() {
               )}
             </div>
 
-            {/* ── LEFT: weather data ── */}
-            <div className="flex flex-col gap-5 order-2 lg:order-1">
+            {/* ── LEFT: weather data — first on mobile, left on desktop ── */}
+            <div className="flex flex-col gap-5 order-1 lg:order-1">
               {loading && (
                 <div className="flex flex-col items-center gap-4 py-12">
                   <div className="w-10 h-10 border-4 border-slate-200 border-t-blue-500 rounded-full animate-spin" />

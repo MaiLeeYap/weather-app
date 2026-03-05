@@ -55,10 +55,17 @@ A full-stack weather application built with Next.js, featuring a 3D interactive 
 - Clicking a thumbnail expands an inline Windy live player iframe
 - Graceful fallback when no webcams are found
 
+### Bilingual — English / Swedish
+- Language toggle (🇬🇧 EN / 🇸🇪 SV) in the header; Swedish is the default
+- Every UI string, label, stat and activity name is fully translated
+- WMO weather condition descriptions (e.g. "Lätt regnskur", "Klar himmel") are served in the selected language
+- Language preference is persisted in `localStorage` across sessions
+
 ### Search with Recent History
 - City search powered by the Open-Meteo Geocoding API
 - Stores the last 10 searched cities in `localStorage`
-- Dropdown shows recent searches on focus; individual entries and a "Clear all" option available
+- Recent history is loaded synchronously on mount — no timing gap on first render
+- Dropdown shows recent searches on focus even after a city has already been selected; individual entries and a "Clear all" option available
 
 ---
 
@@ -95,7 +102,7 @@ A full-stack weather application built with Next.js, featuring a 3D interactive 
 weather-app/
 ├── app/
 │   ├── page.tsx                  # Root page
-│   ├── layout.tsx                # HTML shell, fonts, metadata
+│   ├── layout.tsx                # HTML shell, fonts, metadata, viewport
 │   ├── globals.css               # CSS variables, light-mode overrides, scrollbar
 │   └── api/
 │       ├── weather/route.ts      # Proxy: Open-Meteo forecast
@@ -119,33 +126,50 @@ weather-app/
     ├── types.ts                  # Shared TypeScript interfaces
     ├── utils.ts                  # Slot builders, colour functions, activity scorer
     ├── accuracy.ts               # localStorage forecast storage and scoring
-    └── wmo.ts                    # WMO weather code → emoji + description map
+    ├── wmo.ts                    # WMO weather code → emoji + description (EN + SV)
+    ├── i18n.ts                   # All UI strings in English and Swedish
+    └── LanguageContext.tsx       # React context + useLanguage() hook
 ```
 
 ---
 
 ## Layout
 
-Two-column grid on desktop, stacked on mobile:
+Two-column grid on desktop (`lg:`), single column on mobile. The weather data column always comes first so key information is immediately visible without scrolling.
 
 ```
-┌─────────────────────────────────────────────────────┐
-│              Yappan's Weather Forecast               │
-│                  Monday 2 March 2026                  │
-│                   [ Search city… ]                    │
-├───────────────────────┬─────────────────────────────┤
-│  Current Conditions   │  3D Globe                    │
-│  24-Hour Forecast     │  Live Weather Map (Windy)    │
-│  Forecast Accuracy    │  City Photo                  │
-│  10-Day Forecast      │  Live Webcams                │
-│  Best Time For…       │                              │
-│  Monthly Climate      │                              │
-├───────────────────────┴─────────────────────────────┤
-│       Powered by Open-Meteo · No API key needed      │
-└─────────────────────────────────────────────────────┘
-```
+Desktop
+┌──────────────────────────────┬──────────────────────────────┐
+│  🇸🇪 SV  Yappans Väderprognos  🇬🇧 EN  │                              │
+│         Måndag 2 mars 2026            │                              │
+│           [ Sök stad… ]               │                              │
+├──────────────────┬────────────────────┤                              │
+│ Current Cond.    │  3D Globe          │
+│ 24-Hour Forecast │  Live Weather Map  │
+│ Forecast Accur.  │  City Photo        │
+│ 10-Day Forecast  │  Live Webcams      │
+│ Best Time For…   │                    │
+│ Monthly Climate  │                    │
+├──────────────────┴────────────────────┤
+│  Powered by Open-Meteo · No API key   │
+└───────────────────────────────────────┘
 
-On mobile the right column (globe + visuals) appears first so the globe is immediately visible without scrolling.
+Mobile (stacked, data first)
+┌─────────────────────┐
+│ 🇸🇪 Yappans Väder 🇬🇧 │
+│  [ Sök stad… ]      │
+│  Current Conditions │
+│  24-Hour Forecast   │
+│  Forecast Accuracy  │
+│  10-Day Forecast    │
+│  Best Time For…     │
+│  Monthly Climate    │
+│  3D Globe           │
+│  Live Weather Map   │
+│  City Photo         │
+│  Live Webcams       │
+└─────────────────────┘
+```
 
 ---
 
@@ -196,6 +220,17 @@ npx vercel --prod
 
 ---
 
+## Mobile
+
+- Correct `width=device-width, initialScale=1` viewport declared via Next.js `Viewport` export in `layout.tsx`
+- Search input uses `font-size: 16px` — prevents iOS Safari from auto-zooming on focus (triggered by any input < 16 px)
+- Weather data column stacks first on mobile so current conditions are visible without scrolling
+- 3D globe shrinks from 380 px → 260 px tall on viewports narrower than 480 px
+- Horizontal scroll rows (daily forecast, webcams) use `overflow-x: auto` with momentum scrolling
+- Columns in the hourly forecast table hide gracefully at small widths via `hidden sm:block`
+
+---
+
 ## Accessibility (WCAG)
 
 All text colours meet **WCAG AA** (4.5:1 contrast ratio) as a minimum. Temperature values in the Monthly Climate table meet **WCAG AAA** (7:1+).
@@ -214,7 +249,7 @@ All text colours meet **WCAG AA** (4.5:1 contrast ratio) as a minimum. Temperatu
 
 ## Sustainability
 
-- `backdropFilter: blur()` removed from all cards — it has no visual effect on opaque white cards but continuously loads the GPU
+- `backdropFilter: blur()` removed from all cards and the search dropdown — it has no visual effect on opaque white surfaces but continuously loads the GPU
 - All API routes use `next: { revalidate }` caching to minimise redundant upstream fetches:
   - Weather forecast: 10 minutes
   - Webcams: 5 minutes

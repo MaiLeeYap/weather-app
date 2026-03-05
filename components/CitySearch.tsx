@@ -36,17 +36,14 @@ export default function CitySearch({ onSelect }: Props) {
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [loading, setLoading] = useState(false);
-  const [recent, setRecent] = useState<City[]>([]);
+  const [recent, setRecent] = useState<City[]>(() =>
+    typeof window !== "undefined" ? loadRecent() : []
+  );
   const [showingRecent, setShowingRecent] = useState(false);
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const skipNextSearchRef = useRef(false);
-
-  // Load recent searches from localStorage on mount
-  useEffect(() => {
-    setRecent(loadRecent());
-  }, []);
 
   const doSearch = useCallback(async (q: string) => {
     if (!q.trim()) {
@@ -76,7 +73,11 @@ export default function CitySearch({ onSelect }: Props) {
   }, [query, doSearch]);
 
   function handleFocus() {
-    if (!query.trim() && recent.length > 0) {
+    // Always refresh recent from localStorage (picks up changes from other tabs too)
+    const freshRecent = loadRecent();
+    setRecent(freshRecent);
+    // Show history whenever there are no active search results (e.g. after selecting a city)
+    if (freshRecent.length > 0 && results.length === 0) {
       setShowingRecent(true);
       setOpen(true);
       setActiveIndex(-1);
@@ -135,7 +136,6 @@ export default function CitySearch({ onSelect }: Props) {
         className="flex items-center gap-3 rounded-2xl px-4 py-3"
         style={{
           background: "var(--card-bg)",
-          backdropFilter: "blur(12px)",
           border: "1px solid var(--card-border)",
         }}
       >
@@ -154,11 +154,12 @@ export default function CitySearch({ onSelect }: Props) {
           }}
           onFocus={handleFocus}
           onKeyDown={handleKeyDown}
-          className="flex-1 bg-transparent outline-none text-slate-100 placeholder-slate-500 text-sm"
+          className="flex-1 bg-transparent outline-none text-slate-800 placeholder-slate-400"
+          style={{ fontSize: "16px" }}
           autoComplete="off"
         />
         {loading && (
-          <div className="w-4 h-4 border-2 border-slate-600 border-t-blue-400 rounded-full animate-spin flex-shrink-0" />
+          <div className="w-4 h-4 border-2 border-slate-200 border-t-blue-500 rounded-full animate-spin flex-shrink-0" />
         )}
         {query && !loading && (
           <button
@@ -181,16 +182,16 @@ export default function CitySearch({ onSelect }: Props) {
         <ul
           className="absolute z-50 w-full mt-2 rounded-2xl overflow-hidden"
           style={{
-            background: "rgba(10,15,26,0.98)",
-            backdropFilter: "blur(16px)",
+            background: "var(--card-bg)",
             border: "1px solid var(--card-border)",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.10)",
           }}
         >
           {/* Section header for recent searches */}
           {showingRecent && (
             <li
               className="px-4 pt-3 pb-1 flex items-center justify-between"
-              style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}
+              style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}
             >
               <span className="text-slate-500 text-xs font-medium uppercase tracking-wide flex items-center gap-1.5">
                 <Clock className="w-3 h-3" /> {t.recentSearches}
@@ -215,11 +216,11 @@ export default function CitySearch({ onSelect }: Props) {
               onMouseDown={(e) => { e.preventDefault(); handleSelect(city); }}
               className="px-4 py-3 cursor-pointer text-sm transition-colors flex items-center justify-between group"
               style={{
-                background: i === activeIndex ? "rgba(96,165,250,0.1)" : "transparent",
-                color: i === activeIndex ? "#60a5fa" : "#cbd5e1",
+                background: i === activeIndex ? "rgba(37,99,235,0.07)" : "transparent",
+                color: i === activeIndex ? "#1d4ed8" : "#1e293b",
                 borderBottom:
                   i < displayList.length - 1
-                    ? "1px solid rgba(255,255,255,0.05)"
+                    ? "1px solid rgba(0,0,0,0.06)"
                     : "none",
               }}
             >
@@ -253,12 +254,12 @@ export default function CitySearch({ onSelect }: Props) {
         <ul
           className="absolute z-50 w-full mt-2 rounded-2xl overflow-hidden"
           style={{
-            background: "rgba(10,15,26,0.98)",
-            backdropFilter: "blur(16px)",
+            background: "var(--card-bg)",
             border: "1px solid var(--card-border)",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.10)",
           }}
         >
-          <li className="px-4 py-3 text-slate-400 text-sm">{t.noResults}</li>
+          <li className="px-4 py-3 text-slate-500 text-sm">{t.noResults}</li>
         </ul>
       )}
     </div>
