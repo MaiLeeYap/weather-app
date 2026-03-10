@@ -202,7 +202,11 @@ function WeatherAppInner() {
                     cityName={`${selectedCity.name}${selectedCity.admin1 ? `, ${selectedCity.admin1}` : ""}, ${selectedCity.country}`}
                     today={dailySlots[0]}
                   />
-                  <HourlyForecast slots={hourlySlots} />
+                  <HourlyForecast
+                    slots={hourlySlots}
+                    sunrise={dailySlots[0].sunrise}
+                    sunset={dailySlots[0].sunset}
+                  />
                   <ForecastAccuracy
                     result={accuracyResult}
                     trackingStarted={trackingStarted}

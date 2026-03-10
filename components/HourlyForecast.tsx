@@ -7,10 +7,14 @@ import { useLanguage } from "@/lib/LanguageContext";
 
 interface Props {
   slots: HourlySlot[];
+  sunrise: string;
+  sunset: string;
 }
 
-export default function HourlyForecast({ slots }: Props) {
+export default function HourlyForecast({ slots, sunrise, sunset }: Props) {
   const { t, lang } = useLanguage();
+  const sunriseMs = new Date(sunrise).getTime();
+  const sunsetMs  = new Date(sunset).getTime();
   return (
     <div
       className="card rounded-2xl p-5 md:p-6"
@@ -35,7 +39,9 @@ export default function HourlyForecast({ slots }: Props) {
         </div>
 
         {slots.map((slot, i) => {
-          const wmo = getWMO(slot.weatherCode, lang);
+          const slotMs = new Date(slot.time).getTime();
+          const isNight = slotMs < sunriseMs || slotMs > sunsetMs;
+          const wmo = getWMO(slot.weatherCode, lang, isNight);
           return (
             <div
               key={i}
