@@ -64,6 +64,10 @@ function WeatherAppInner() {
       setForecast(data);
 
       const daily = data.daily;
+
+      // Read yesterday's stored forecast BEFORE overwriting with today's
+      const stored = getStoredForecast(city.latitude, city.longitude);
+
       if (daily.time.length > 0) {
         storeTodayForecast(
           city.latitude,
@@ -78,7 +82,6 @@ function WeatherAppInner() {
 
       if (accuracyRes.ok) {
         const actualData = await accuracyRes.json();
-        const stored = getStoredForecast(city.latitude, city.longitude);
         // actualData.date is yesterday in the city's local timezone (from Open-Meteo)
         // stored.forDate is the date we stored the forecast for (also from Open-Meteo)
         // Comparing these avoids UTC vs local timezone mismatches
@@ -92,6 +95,7 @@ function WeatherAppInner() {
             })
           );
         } else if (stored) {
+          // Forecast stored but date doesn't match yet — still tracking
           setTrackingStarted(true);
         }
       }
