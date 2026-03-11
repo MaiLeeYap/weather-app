@@ -49,7 +49,7 @@ const en = {
   accuracyTitle: "Yesterday's Forecast Accuracy",
   trackingStartedMsg:
     "Tracking started — check back tomorrow to see how accurate today's forecast was.",
-  searchToTrack: "Search a city to start tracking forecast accuracy.",
+  searchToTrack: "Search this city today — come back tomorrow to see how accurate the forecast was.",
   high: "High",
   low: "Low",
   sky: "Sky",
@@ -165,7 +165,7 @@ const sv: typeof en = {
   accuracyTitle: "Gårdagens prognosnoggrannhet",
   trackingStartedMsg:
     "Spårning startad — kom tillbaka imorgon för att se hur noggrann dagens prognos var.",
-  searchToTrack: "Sök efter en stad för att börja spåra prognosnoggrannhet.",
+  searchToTrack: "Sök på den här staden idag — kom tillbaka imorgon för att se hur noggrann prognosen var.",
   high: "Max",
   low: "Min",
   sky: "Himmel",

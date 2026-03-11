@@ -65,14 +65,18 @@ function WeatherAppInner() {
 
       const daily = data.daily;
 
-      // Read yesterday's stored forecast BEFORE overwriting with today's
+      // Read stored forecast BEFORE any potential overwrite
       const stored = getStoredForecast(city.latitude, city.longitude);
+      const todayDate = daily.time[0];
 
-      if (daily.time.length > 0) {
+      // Only store today's forecast if we haven't already done so today.
+      // If we overwrote on every search, a second search today would replace
+      // yesterday's stored forecast and break the accuracy comparison.
+      if (daily.time.length > 0 && (!stored || stored.forDate !== todayDate)) {
         storeTodayForecast(
           city.latitude,
           city.longitude,
-          daily.time[0],
+          todayDate,
           daily.temperature_2m_max[0],
           daily.temperature_2m_min[0],
           daily.precipitation_probability_max[0],
